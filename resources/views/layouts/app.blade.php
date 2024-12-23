@@ -18,6 +18,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('groups.create') }}">Создать группу</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('students.index') }}">Список студентов</a>
+                </li>
             </ul>
         </div>
     </nav>
