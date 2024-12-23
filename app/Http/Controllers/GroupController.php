@@ -68,20 +68,19 @@ class GroupController extends Controller
 
     // 6. Создаёт студента для группы
     public function storeStudent(Request $request, Group $group)
-{
-    // Валидируем данные для студента
-    $validated = $request->validate([
-        'surname' => 'required|string|max:255',  // Фамилия студента
-        'name' => 'required|string|max:255',     // Имя студента
-    ]);
+    {
+        // Валидируем данные для студента
+        $validated = $request->validate([
+            'surname' => 'required|string|max:255',  // Фамилия студента
+            'name' => 'required|string|max:255',     // Имя студента
+        ]);
 
-    // Добавляем студента в группу
-    $group->students()->create($validated);
+        // Добавляем студента в группу
+        $group->students()->create($validated);
 
-    // Перенаправляем на страницу группы с сообщением об успешном добавлении студента
-    return redirect()->route('groups.show', $group)->with('success', 'Студент успешно добавлен!');
-}
-
+        // Перенаправляем на страницу группы с сообщением об успешном добавлении студента
+        return redirect()->route('groups.show', $group)->with('success', 'Студент успешно добавлен!');
+    }
 
     // 7. Отображает информацию о студенте
     public function showStudent(Group $group, Student $student)
@@ -89,4 +88,42 @@ class GroupController extends Controller
         // Отображаем информацию о студенте в группе
         return view('students.show', compact('group', 'student'));
     }
+
+    // 8. Отображает форму редактирования группы
+    public function edit(Group $group)
+    {
+        // Отображаем форму для редактирования выбранной группы
+        return view('groups.edit', compact('group'));
+    }
+
+    // 9. Обновляет данные группы
+    public function update(Request $request, Group $group)
+    {
+        // Валидируем данные, полученные от пользователя
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',  // Название группы
+            'start_from' => 'required|date',       // Дата начала обучения
+            'is_active' => 'nullable|boolean',     // Статус активности
+        ]);
+
+        // Обновляем данные группы
+        $group->update([
+            'title' => $validated['title'],
+            'start_from' => $validated['start_from'],
+            'is_active' => $request->has('is_active') ? true : false,
+        ]);
+
+        // Перенаправляем на список групп с уведомлением об успешном обновлении
+        return redirect()->route('groups.index')->with('success', 'Группа успешно обновлена!');
+    }
+
+     // 10. Удаляет группу
+     public function destroy(Group $group)
+     {
+         // Удаляем группу
+         $group->delete();
+ 
+         // Перенаправляем на список групп с сообщением об успешном удалении
+         return redirect()->route('groups.index')->with('success', 'Группа успешно удалена!');
+     }
 }

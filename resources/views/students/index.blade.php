@@ -4,6 +4,7 @@
 
 @section('content')
     <h1>Список студентов</h1>
+
     <table class="table">
         <thead>
             <tr>
@@ -19,10 +20,11 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $student->surname }}</td>
                     <td>{{ $student->name }}</td>
-                    <td>{{ $student->group->title ?? 'Нет группы' }}</td>
+                    <td>{{ $student->group->title ?? 'Без группы' }}</td> <!-- Используем отношение group -->
                 </tr>
             @endforeach
         </tbody>
     </table>
-    <a href="{{ route('home') }}" class="btn btn-secondary">Назад</a>
+
+    <a href="{{ route('groups.create') }}" class="btn btn-primary">Добавить нового студента</a>
 @endsection
